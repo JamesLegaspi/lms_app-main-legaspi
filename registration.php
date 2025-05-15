@@ -361,5 +361,119 @@ function validateStep(step) {
     });
   </script>
  
+<<<<<<< HEAD
+=======
+<script>
+
+$(document).ready(function(){
+
+  isUsernamevalid = false;
+  isEmailvalid = false;
+  
+
+    function toggleNextButton(isEnabled) {
+        $('#nextButton').prop('disabled', !isEnabled);
+    }
+
+    $('#username').on('input', function(){
+        var username = $(this).val();
+        if (username.length > 0) {
+            $.ajax({
+                url: 'AJAX/check_username.php',
+                method: 'POST',
+                data: { username: username },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.exists) {
+                        // Email is already taken
+                        $('#username').removeClass('is-valid').addClass('is-invalid');
+                        $('#usernameFeedback').text('Username is already taken.').show();
+                        $('#username')[0].setCustomValidity('Username is already taken.');
+                        $('#username').siblings('.invalid-feedback').not('#usernameFeedback').hide();
+                        isUsernamevalid = false;
+                    } else {
+                        // Email is valid and available
+                        $('#username').removeClass('is-invalid').addClass('is-valid');
+                        $('#usernameFeedback').text('').hide();
+                        $('#username')[0].setCustomValidity('');
+                        $('#username').siblings('.valid-feedback').show();
+                        isUsernamevalid = true; // ✅ Enable next button
+                    }
+                    toggleNextButton (isUsernamevalid && isEmailvalid);
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+        } else {
+            // Empty input reset
+            $('#username').removeClass('is-valid is-invalid');
+            $('#usernameFeedback').text('').hide();
+            $('#username')[0].setCustomValidity('');
+            toggleNextButton(false); // ❌ Disable next button
+        }
+    });
+
+    $('#username').on('invalid', function() {
+        if ($('#username')[0].validity.valueMissing) {
+            $('#username')[0].setCustomValidity('Please enter a valid username.');
+            $('#usernameFeedback').hide();
+            toggleNextButton(false); 
+        }
+    });
+
+    $('#email').on('input', function(){
+        var email = $(this).val();
+        if (email.length > 0) {
+            $.ajax({
+                url: 'AJAX/check_email.php',
+                method: 'POST',
+                data: { email: email },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.exists) {
+                        // Email is already taken
+                        $('#email').removeClass('is-valid').addClass('is-invalid');
+                        $('#emailFeedback').text('Email is already taken.').show();
+                        $('#email')[0].setCustomValidity('Email is already taken.');
+                        $('#email').siblings('.invalid-feedback').not('#emailFeedback').hide();
+                        isEmailvalid = false;
+                    } else {
+                        // Email is valid and available
+                        $('#email').removeClass('is-invalid').addClass('is-valid');
+                        $('#emailFeedback').text('').hide();
+                        $('#email')[0].setCustomValidity('');
+                        $('#email').siblings('.valid-feedback').show();
+                        isEmailvalid = true; // ✅ Enable next button
+                    }
+                    toggleNextButton (isUsernamevalid && isEmailvalid);
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred: ' + error);
+                }
+            });
+        } else {
+            // Empty input reset
+            $('#email').removeClass('is-valid is-invalid');
+            $('#emailFeedback').text('').hide();
+            $('#email')[0].setCustomValidity('');
+            toggleNextButton(false); // ❌ Disable next button
+        }
+    });
+
+    $('#email').on('invalid', function() {
+        if ($('#email')[0].validity.valueMissing) {
+            $('#email')[0].setCustomValidity('Please enter a valid email.');
+            $('#emailFeedback').hide();
+            toggleNextButton(false); 
+        }
+    });
+    
+});
+</script>
+
+
+
+>>>>>>> 5b91317 (AJAX)
   </body>
   </html>
